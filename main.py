@@ -1,14 +1,32 @@
 import os
+import google.generativeai as genai
 from telegram.ext import Updater, MessageHandler, Filters
 
 TOKEN = os.environ["BOT_TOKEN"]
+GEMINI_KEY = os.environ["GEMINI_API_KEY"]
+
+genai.configure(api_key=GEMINI_KEY)
+model = genai.GenerativeModel("gemini-pro")
 
 def reply(update, context):
-    update.message.reply_text("Roonie is alive on Railway.")
+    user_text = update.message.text
+
+    prompt = f"""
+You are a personal assistant called Roonie.
+Reply naturally and helpfully to the user.
+User message: {user_text}
+"""
+
+    try:
+        response = model.generate_content(prompt)
+        text = response.text.strip()
+    except Exception as e:
+        text = "Sorry, my brain is having a moment."
+
+    update.message.reply_text(text)
 
 updater = Updater(TOKEN, use_context=True)
 dp = updater.dispatcher
-
 dp.add_handler(MessageHandler(Filters.text & ~Filters.command, reply))
 
 updater.start_polling()
