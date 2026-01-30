@@ -1,15 +1,14 @@
 import os
-from telegram.ext import Updater, MessageHandler, Filters
+from telegram import Update
+from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
+BOT_TOKEN = os.environ["BOT_TOKEN"]
 
-def handle_message(update, context):
-    update.message.reply_text("👋 Hi, I'm Roonie. I'm awake and running on Railway.")
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("👋 Hi, I'm Roonie. I'm awake and running on Railway.")
 
-updater = Updater(BOT_TOKEN, use_context=True)
-dp = updater.dispatcher
+app = ApplicationBuilder().token(BOT_TOKEN).build()
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
-
-updater.start_polling()
-updater.idle()
+if __name__ == "__main__":
+    app.run_polling()
