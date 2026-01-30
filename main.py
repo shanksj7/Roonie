@@ -3,7 +3,9 @@ import google.generativeai as genai
 from telegram.ext import Updater, MessageHandler, Filters
 
 TOKEN = os.environ["BOT_TOKEN"]
-GEMINI_KEY = os.environ["GEMINI_API_KEY"]
+GEMINI_KEY = os.environ.get("GEMINI_API_KEY")
+if not GEMINI_KEY:
+    print("GEMINI_API_KEY not set")
 
 genai.configure(api_key=GEMINI_KEY)
 model = genai.GenerativeModel("gemini-pro")
