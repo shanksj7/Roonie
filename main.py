@@ -8,7 +8,7 @@ if not GEMINI_KEY:
     print("GEMINI_API_KEY not set")
 
 genai.configure(api_key=GEMINI_KEY)
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 def reply(update, context):
     user_text = update.message.text
