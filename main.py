@@ -13,7 +13,7 @@ if not GEMINI_KEY:
 genai.configure(api_key=GEMINI_KEY)
 
 # Use a free Gemini model
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-pro")
 
 def reply(update, context):
     user_text = update.message.text
