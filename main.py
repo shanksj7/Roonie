@@ -2,10 +2,17 @@ import os
 import google.generativeai as genai
 from telegram.ext import Updater, MessageHandler, Filters
 
+# Required environment variables
 TOKEN = os.environ["BOT_TOKEN"]
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY")
 
+if not GEMINI_KEY:
+    raise RuntimeError("GEMINI_API_KEY is not set in Railway variables")
+
+# Configure Gemini with your API key
 genai.configure(api_key=GEMINI_KEY)
+
+# Use a free Gemini model
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def reply(update, context):
@@ -14,6 +21,7 @@ def reply(update, context):
     prompt = f"""
 You are a personal assistant called Roonie.
 Reply naturally and helpfully to the user.
+
 User message: {user_text}
 """
 
