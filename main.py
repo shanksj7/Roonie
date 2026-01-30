@@ -19,11 +19,11 @@ Reply naturally and helpfully to the user.
 User message: {user_text}
 """
 
-    try:
+      try:
         response = model.generate_content(prompt)
         text = response.text.strip()
     except Exception as e:
-        text = "Sorry, my brain is having a moment."
+        text = f"Gemini error: {e}"
 
     update.message.reply_text(text)
 
